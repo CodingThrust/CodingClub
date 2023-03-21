@@ -5,7 +5,7 @@ The coding club material is usually in the form of `.pdf`, `.md` or notebooks.
 1. [20221105-The Julia programming language - Jinguo Liu](julia)
 2. [20221112-Create a static website with Franklin.jl - Jinguo Liu](franklin)
 3. [20230218-An introduction to Zulip - Yusheng Zhao]()
-4. [20230225-Automatic differentiation - Jinguo Liu]()
+4. [20230225-Automatic differentiation - Jinguo Liu](autodiff)
 5. [20230303-Adapt latex template to personal use - Tong Yuan]()
 6. [20230318-The Evolution of NLP: From Language Modeling to ChatGPT's Success with Prompt](prompt)
 
