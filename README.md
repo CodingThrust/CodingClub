@@ -1,10 +1,17 @@
-# CodingClub
-Coding every Saturday afternoon at Starbuck, HKUST (GZ)
+# CodingClub Materials
+The coding club material is usually in the form of `.pdf`, `.md` or notebooks.
 
-## Our Values
-* **Relax** It is supposed to be a very relaxed event, everyone feel free to join and drop out,
-* **Respect** We respect stupid questions. It is a place that any type of questions are welcomed. When answering questions, please try to be helpful. "You can google it." like answer is not considered as helpful.
+## Table of contents
+1. [20221105-The Julia programming language - Jinguo Liu](julia)
+2. [20221112-Create a static website with Franklin.jl - Jinguo Liu](franklin)
+3. [20230218-An introduction to Zulip - Yusheng Zhao]()
+4. [20230225-Automatic differentiation - Jinguo Liu]()
+5. [20230303-Adapt latex template to personal use - Tong Yuan]()
+6. [20230318-The Evolution of NLP: From Language Modeling to ChatGPT's Success with Prompt](prompt)
 
-## Rules
-1. food must be free,
-2. propose a candidate to make a sharing by editing [this sheet](https://hkustgz-my.sharepoint.com/:x:/g/personal/jinguoliu_hkust-gz_edu_cn/EdFJNMDyWlVPlTzQDWh9VmQBMc8GBocDUusORekvG1x2ig?e=wyK20g)
+
+## To join our coding club
+If you haven't joined the [HKUST-GZ Zulip workspace](http://zulip.hkust-gz.edu.cn/), please check the following invitation link to join our Zulip workspace and subscribe `#coding-club` stream.
+https://zulip.hkust-gz.edu.cn/join/uqe4q76jbpowflb42ydaav5b/
+
+If you are already a member of the [HKUST-GZ Zulip workspace](http://zulip.hkust-gz.edu.cn/), you may subscript the updates directly by navigating to the `#coding-club` stream.
