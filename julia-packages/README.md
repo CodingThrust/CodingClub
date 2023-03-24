@@ -1,8 +1,23 @@
 # Essential Julia packages
+You may find trending Julia packages here: https://juliahub.com/ui/Packages
+
 ## Development
 1. [PkgTemplates](https://github.com/JuliaCI/PkgTemplates.jl) `package development`, `continuous integration`
 
-Create new Julia packages, the easy way
+Create new Julia packages, the easy way.
+
+```julia
+julia> using PkgTemplates
+
+julia> tpl = Template(; user="GiggleLiu", plugins=[
+           GitHubActions(; extra_versions=["nightly"]),
+           Git(),
+           Codecov(),
+           Documenter{GitHubActions}(),
+       ])
+
+julia> tpl("PkgName")
+```
 
 2. [Revise](https://github.com/timholy/Revise.jl) `package development`, `reload`
 
@@ -12,6 +27,8 @@ Create new Julia packages, the easy way
 1. [CUDA](https://github.com/JuliaGPU/CUDA.jl) `CUDA`, `kernels`
 
 The CUDA.jl package is the main programming interface for working with NVIDIA CUDA GPUs using Julia. It features a user-friendly array abstraction, a compiler for writing CUDA kernels in Julia, and wrappers for various CUDA libraries.
+
+Example: [cuda.jl](cuda.jl)
 
 2. [LoopVectorization](https://github.com/JuliaSIMD/LoopVectorization.jl) `AVX`, `SIMD`, `CPU`, `speed`
 
@@ -69,3 +86,24 @@ A Julia package collecting a number of Krylov-based algorithms for linear proble
 2. [ExponentialUtilities](https://github.com/SciML/ExponentialUtilities.jl) `expmv`, `krylov space`
 
 ExponentialUtilities is a package of utility functions for matrix functions of exponential type, including functionality for the matrix exponential and phi-functions. These methods are more numerically stable, generic (thus support a wider range of number types), and faster than the matrix exponentiation tools in Julia's Base. The tools are used by the exponential integrators in OrdinaryDiffEq. The package has no external dependencies, so it can also be used independently.
+
+3. [Makie](https://github.com/MakieOrg/Makie.jl) `plot`, `gpu`
+
+Visualizations and plotting in Julia.
+
+Example: [makie.jl](cuda.jl)
+
+4. DelimitedFiles
+
+```julia
+julia> using DelimitedFiles
+
+julia> x = randn(100, 100);julia> writedlm(x);
+
+julia> writedlm("_test.dat", x);
+
+julia> y = readdlm("_test.dat");
+
+julia> x ≈ y
+true
+```
