@@ -8,6 +8,7 @@ The coding club material is usually in the form of `.pdf`, `.md` or notebooks.
 4. [20230225-Automatic differentiation - Jinguo Liu](autodiff)
 5. [20230303-Adapt latex template to personal use - Tong Yuan]()
 6. [20230318-The Evolution of NLP: From Language Modeling to ChatGPT's Success with Prompt - Yijie Xu](prompt)
+6. [20230325-Essential Julia packages - Jinguo Liu](julia-packages)
 
 
 ## To join our coding club
