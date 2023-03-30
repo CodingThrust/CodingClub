@@ -18,8 +18,6 @@
 - Config editor
   ~$ git config --global core.editor emacs~
 
-- If you forgot to do something in the last commit before pushing
-- ~git commit --amend~ is your pal.
 *** Git-Basics-Undoing-Things:
 - Introduction to undoing changes in Git
 - Three basic ways to undo changes in Git:
@@ -143,27 +141,27 @@ be changed using the chmod command in Linux.
 20. ~wget~ - Download files from the internet.
 
 ** Tools
-1. ripgrep (rg): A fast text search tool that recursively searches a directory
+1. ~ripgrep~ (rg): A fast text search tool that recursively searches a directory
    hierarchy for a regex pattern.
-2. Tmux: A terminal multiplexer that allows you to divide your terminal into
+2. ~Tmux~: A terminal multiplexer that allows you to divide your terminal into
    multiple panes and windows.
-3. Ncdu: A disk usage analyzer that helps you visualize which files and
+3. ~Ncdu~: A disk usage analyzer that helps you visualize which files and
    directories are consuming the most space on your filesystem.
-4. tldr: A simplified and community-driven version of man pages that provides
+4. ~tldr~: A simplified and community-driven version of man pages that provides
    practical examples of command line usage.
-5. Bat: A cat replacement that provides syntax highlighting, line numbering, and
+5. ~Bat~: A cat replacement that provides syntax highlighting, line numbering, and
    Git integration.
-6. Exa: A modern replacement for ls that supports additional features like file
+6. ~Exa~: A modern replacement for ls that supports additional features like file
    icons, Git status, and color themes.
-7. Bandwhich: A bandwidth usage analyzer that helps you see which processes are
+7. ~Bandwhich~: A bandwidth usage analyzer that helps you see which processes are
    using the most network bandwidth.
-8. fd: A more user-friendly alternative to find that allows you to search for
+8. ~fd~: A more user-friendly alternative to find that allows you to search for
    files and directories using a streamlined syntax.
-9. htop: An interactive process viewer that provides detailed information about
+9. ~htop~: An interactive process viewer that provides detailed information about
    system resource usage and allows you to manage processes.
-10. Tmuxp: A command line tool that allows you to easily manage and share your
+10. ~Tmuxp~: A command line tool that allows you to easily manage and share your
     Tmux configurations.
-11. direnv: direnv is a shell extension that allows users to manage environment
+11. ~direnv~: direnv is a shell extension that allows users to manage environment
     variables for different directories. It is designed to alleviate the
     inconvenience of constantly setting and unsetting environmental variables
     within different development environments.
