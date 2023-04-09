@@ -2,7 +2,7 @@
 
 ### Get started
 
-This tutorial is contained in the Pluto notebook file: [notebook.jl](notebook.jl).
+This tutorial is contained in the Pluto notebook file: [notebook.jl](notebook.jl) [[pdf](notebook.pdf)].
 You can open it with [Pluto](https://github.com/fonsp/Pluto.jl).
 
 ## The SSSS-Challenge
