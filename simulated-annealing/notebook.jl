@@ -31,14 +31,14 @@ begin
 		Base.show(io, mime, b.content)
 	end
 	
-	macro xbind(args...)
-		esc(quote
-			let
-				bond = @bind $(args...)
-				$BondWrapper(bond)
-			end
-		end)
-	end
+	#macro xbind(args...)
+	#	esc(quote
+	#		let
+	#			bond = @bind $(args...)
+	#			$BondWrapper(bond)
+	#		end
+	#	end)
+	#end
 end;
 
 # ╔═╡ 0b0e674d-688d-491d-8a51-36334ad40b1a
@@ -237,7 +237,7 @@ sap = load_coupling("programs/example.txt")
 end
 
 # ╔═╡ a883bf1a-f38c-4759-9287-7bad55d9ac37
-@xbind run_julia_benchmark CheckBox()
+@bind run_julia_benchmark CheckBox()
 
 # ╔═╡ 0aebe7f7-3a88-4bf3-ab81-2d817f2d56b8
 if run_julia_benchmark @benchmark anneal(30, $sap, $tempscales, 4000) end
@@ -263,10 +263,11 @@ cd(joinpath(@__DIR__, "programs")) do
 end
 
 # ╔═╡ e9ffb48e-8d57-468e-b47c-466d827faa78
-@xbind run_fortran_benchmark CheckBox()
+@bind run_fortran_benchmark CheckBox()
 
-# ╔═╡ 9e51d1eb-8933-4e92-8c42-4d5c229b1231
-if run_fortran_benchmark @benchmark ccall($((:test_, joinpath(@__DIR__, "programs/fsa.so"))), Int32, ()) end
+# ╔═╡ ef586d7e-adbc-44b3-b6eb-6685b3e13378
+# crash!
+# @benchmark ccall(((:test_, joinpath(@__DIR__, "fsa.so"))), Int32, ())
 
 # ╔═╡ 1acd9c9b-6a01-44ab-9cbe-9d0c94544f39
 md"""
@@ -307,7 +308,7 @@ catch e
 end
 
 # ╔═╡ 01dd7234-f600-4597-b372-049e000ced1b
-@xbind benchmark_python CheckBox()
+@bind benchmark_python CheckBox()
 
 # ╔═╡ a3575bea-e521-47e1-9167-62e999728786
 if benchmark_python @benchmark pysa.test_codec() end
@@ -336,9 +337,9 @@ PythonCall = "~0.9.12"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.8.5"
+julia_version = "1.9.0-rc2"
 manifest_format = "2.0"
-project_hash = "406566cb8f74fec80745bdcf25484266d91abb06"
+project_hash = "3c9743b42aefe8f050872f1389dfdc77f9f22d5f"
 
 [[deps.AbstractPlutoDingetjes]]
 deps = ["Pkg"]
@@ -371,7 +372,7 @@ version = "0.11.4"
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.1+0"
+version = "1.0.2+0"
 
 [[deps.CondaPkg]]
 deps = ["JSON3", "Markdown", "MicroMamba", "Pidfile", "Pkg", "TOML"]
@@ -395,7 +396,9 @@ uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 
 [[deps.DelimitedFiles]]
 deps = ["Mmap"]
+git-tree-sha1 = "9e2f36d3c96a820c678f2f1f1782582fcf685bae"
 uuid = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+version = "1.9.1"
 
 [[deps.Downloads]]
 deps = ["ArgTools", "FileWatching", "LibCURL", "NetworkOptions"]
@@ -483,7 +486,7 @@ version = "1.10.2+0"
 uuid = "8f399da3-3557-5675-b5ff-fb832c97cbdb"
 
 [[deps.LinearAlgebra]]
-deps = ["Libdl", "libblastrampoline_jll"]
+deps = ["Libdl", "OpenBLAS_jll", "libblastrampoline_jll"]
 uuid = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 
 [[deps.Logging]]
@@ -507,7 +510,7 @@ uuid = "d6f4376e-aef5-505a-96c1-9c027394607a"
 [[deps.MbedTLS_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
-version = "2.28.0+0"
+version = "2.28.2+0"
 
 [[deps.MicroMamba]]
 deps = ["Pkg", "Scratch", "micromamba_jll"]
@@ -520,7 +523,7 @@ uuid = "a63ad114-7e13-5084-954f-fe012c677804"
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2022.2.1"
+version = "2022.10.11"
 
 [[deps.NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
@@ -529,7 +532,7 @@ version = "1.2.0"
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.20+0"
+version = "0.3.21+4"
 
 [[deps.OrderedCollections]]
 git-tree-sha1 = "d321bf2de576bf25ec4d3e4360faca399afca282"
@@ -549,9 +552,9 @@ uuid = "fa939f87-e72e-5be4-a000-7fc836dbe307"
 version = "1.3.0"
 
 [[deps.Pkg]]
-deps = ["Artifacts", "Dates", "Downloads", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
+deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.8.0"
+version = "1.9.0"
 
 [[deps.PlutoUI]]
 deps = ["AbstractPlutoDingetjes", "Base64", "ColorTypes", "Dates", "FixedPointNumbers", "Hyperscript", "HypertextLiteral", "IOCapture", "InteractiveUtils", "JSON", "Logging", "MIMEs", "Markdown", "Random", "Reexport", "URIs", "UUIDs"]
@@ -621,12 +624,13 @@ version = "1.0.3"
 uuid = "6462fe0b-24de-5631-8697-dd941f90decc"
 
 [[deps.SparseArrays]]
-deps = ["LinearAlgebra", "Random"]
+deps = ["Libdl", "LinearAlgebra", "Random", "Serialization", "SuiteSparse_jll"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [[deps.Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
+version = "1.9.0"
 
 [[deps.StructTypes]]
 deps = ["Dates", "UUIDs"]
@@ -634,10 +638,15 @@ git-tree-sha1 = "ca4bccb03acf9faaf4137a9abc1881ed1841aa70"
 uuid = "856f2bd8-1eba-4b0a-8007-ebc267875bd4"
 version = "1.10.0"
 
+[[deps.SuiteSparse_jll]]
+deps = ["Artifacts", "Libdl", "Pkg", "libblastrampoline_jll"]
+uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
+version = "5.10.1+6"
+
 [[deps.TOML]]
 deps = ["Dates"]
 uuid = "fa267f1f-6049-4f14-aa54-33bafae1ed76"
-version = "1.0.0"
+version = "1.0.3"
 
 [[deps.TableTraits]]
 deps = ["IteratorInterfaceExtensions"]
@@ -654,7 +663,7 @@ version = "1.10.1"
 [[deps.Tar]]
 deps = ["ArgTools", "SHA"]
 uuid = "a4e569a6-e804-4fa4-b0f3-eef7a1d5b13e"
-version = "1.10.1"
+version = "1.10.0"
 
 [[deps.Test]]
 deps = ["InteractiveUtils", "Logging", "Random", "Serialization"]
@@ -685,12 +694,12 @@ version = "1.0.0"
 [[deps.Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
-version = "1.2.12+3"
+version = "1.2.13+0"
 
 [[deps.libblastrampoline_jll]]
-deps = ["Artifacts", "Libdl", "OpenBLAS_jll"]
+deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.1.1+0"
+version = "5.4.0+0"
 
 [[deps.micromamba_jll]]
 deps = ["Artifacts", "JLLWrappers", "LazyArtifacts", "Libdl"]
@@ -739,7 +748,7 @@ version = "17.4.0+0"
 # ╟─8fa64302-22ac-49b1-ae0d-035660eacdac
 # ╠═8dac622d-b115-46e5-8dd8-2150fcf53cc5
 # ╟─e9ffb48e-8d57-468e-b47c-466d827faa78
-# ╠═9e51d1eb-8933-4e92-8c42-4d5c229b1231
+# ╠═ef586d7e-adbc-44b3-b6eb-6685b3e13378
 # ╟─1acd9c9b-6a01-44ab-9cbe-9d0c94544f39
 # ╠═c96ce06a-bd6a-419c-8c77-cc76ea0f8593
 # ╠═92e7af60-0566-4769-b90c-e0abbb2b2f76
