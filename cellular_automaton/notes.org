@@ -1,0 +1,21 @@
+#+TITlE: From Cellular Automaton to Logic Circuit
+#+AUTHOR: Yusheng Zhao
+
+* Intro to Cellular Automaton(CA)
+
+** From our world to toy universe
+
+
+* Rules of Cellular Automaton
+
+* Turing machine
+
+* Logic Gates
+
+* Basic Circuits
+
+* Resources
+- [[https://natureofcode.com/book/chapter-7-cellular-automata/][Link1]]
+- [[https://clark.physics.illinois.edu/html/CellularAutomata/OtherAutomata.html][UIUC]]
+** Extra
+- [[https://ocw.mit.edu/courses/21m-380-music-and-technology-algorithmic-and-generative-music-spring-2010/2f857cbecfafe8280d73b1571698872e_MIT21M_380S10_lec17.pdf][Generating Music With CA]]
