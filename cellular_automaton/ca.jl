@@ -12,12 +12,22 @@ end
 # ╔═╡ bed736d7-2c81-43fd-9b65-cfcf9cf4d612
 md"
 # Game of Life
-You might have seen the following game of life before. It is a cellular automaton that is defined by the following rules:
-First, we define a cell to be alive or dead. Then, we define a neighborhood of a cell to be the 8 cells surrounding it.
-Then, we define the following rules:
-1. If a cell is alive and has 2 or 3 neighbors, it stays alive.
-2. If a cell is dead and has 3 neighbors, it becomes alive.
-3. Otherwise, the cell dies.
+You might have seen the following animation below. This is called Conway's Game
+of Life. It belongs to a class of abstract mathematical game called *cellular
+automata*. This is a *zero-player game* meaning that the evolution of the game
+is determined by its initial state, requiring no further input. One interacts
+with the Game of Life by creating an initial configuration and observing how it
+evolves. The game is played on a grid of cells, where each cell is either alive
+or dead. We represent a dead cell with color white and a living cell with color
+black. The state of the grid evolves through time according to a few simple
+rules.
+The rules are as follows:
+1. Any live cell with fewer than two live neighbours dies, as if by underpopulation.
+2. Any live cell with two or three live neighbours lives on to the next generation.
+3. Any live cell with more than three live neighbours dies, as if by overpopulation.
+4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
+The rules of the game are simple. However, given a random initial state, the
+patterns that emerge can becomplex.
 "
 
 
@@ -39,13 +49,43 @@ begin
 
 end
 
+# ╔═╡ a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
+md"
+# Universality of cellular automaton
+A cellular automata is a universal Turing machine. This means that any
+computation that can be performed by a Turing machine can be performed by a
+cellular automata. For the purpose of illustration, we will use the Game of Life
+as an example. The following animation shows the evolution of what's known as a
+Gosper glider gun. This initial state is designed in response to Conway's
+challenge. Using a finite amount of living cells in the initial state, evolution
+of the game will produce an infinite amount of living cells. It is quite
+intuitive to observe that the initial state will produce a glider every 30
+steps. The glider will fly into infinity and beyond, thus never interact with
+the gun or any glider that is created. Hence, we have an infinite amount of
+cells created at the end.
+
+However, what is more interesting for this initial state is that the glider that
+is produced by it could be used to construct arbitrary logical circuit.
+
+...
+"
+
 # ╔═╡ 298734a8-278c-488b-a5ff-30087ae412cc
 begin
-	glider = [[0, 0, 1, 0, 0] [0, 0, 0, 1, 0] [0, 1, 1, 1, 0]]
-	
-	space = zeros(Bool, 30, 30)
+	gosper_glider_gun = [[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 ]
+[ 	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0    ]
+[ 	0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 1 1  ]
+[ 	0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 1 1  ]
+[ 	1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0  ]
+[ 	1 1 0 0 0 0 0 0 0 0 1 0 0 0 1 0 1 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0  ]
+[ 	0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0  ]
+[ 	0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  ]
+[ 	0 0 0 0 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0  ]
+]
+
+	space = zeros(Bool, 50, 50)
 	insert = 1
-	space[insert:insert+size(glider, 1)-1, insert:insert+size(glider, 2)-1] = glider
+	space[insert:insert+size(gosper_glider_gun, 1)-1, insert:insert+size(gosper_glider_gun, 2)-1] = gosper_glider_gun
 	gens = 100
 	space_gliding = CellularAutomaton(Life((3, (2,3))), space, gens)
 
@@ -59,6 +99,27 @@ begin
 	end
 
 end 
+
+# ╔═╡ 6cf547f9-a955-4735-ad8e-9a732d1733fc
+md"
+We should also note that the rules are not fixed. We can change the rules to make the game more interesting.
+This is what happens in the general case of cellular automata.
+
+Describe how to define a rule, look at https://www.cs.cmu.edu/~tcortina/15110m13/Unit09PtC.pdf
+Give an example of what a rule could present
+"
+
+# ╔═╡ 99d79079-5f23-4abd-8a07-3465d5263891
+md"
+# Origin of Cellular Automaton
+Cellular Automata was invented in the hope to find a way to simulate the behavior of complex systems with simple and local rules.
+The idea is that if we can find a way to simulate complex systems with simple rules, we can then use these rules to predict the behavior of the complex system.
+This is a very powerful idea, and it has been used in many fields, such as biology, chemistry, physics, and economics.
+Furthermore, this is not based on nothing. As we
+"
+
+# ╔═╡ 4ac48c41-3934-41ef-af37-1b98e6175c37
+
 
 # ╔═╡ b0c1ffe2-fd4e-4a61-b399-f9d5d919189c
 
@@ -80,7 +141,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "fddaf07ce28d913638dc0fc8bac0eaf4f201f392"
+project_hash = "7eff8ba5636a9c8f5efed54deda3c27f1b77d3e9"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -1009,7 +1070,11 @@ version = "1.4.1+0"
 # ╠═ae36ea00-8761-4066-86f9-4a1814d3a3d9
 # ╟─bed736d7-2c81-43fd-9b65-cfcf9cf4d612
 # ╠═fd075859-ca44-44b0-83de-f0d3b9dee70b
+# ╟─a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
 # ╠═298734a8-278c-488b-a5ff-30087ae412cc
+# ╠═6cf547f9-a955-4735-ad8e-9a732d1733fc
+# ╠═99d79079-5f23-4abd-8a07-3465d5263891
+# ╠═4ac48c41-3934-41ef-af37-1b98e6175c37
 # ╠═b0c1ffe2-fd4e-4a61-b399-f9d5d919189c
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
