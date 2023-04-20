@@ -15,19 +15,19 @@ md"
 You might have seen the following animation below. This is called Conway's Game
 of Life. It belongs to a class of abstract mathematical game called *cellular
 automata*. This is a *zero-player game* meaning that the evolution of the game
-is determined by its initial state, requiring no further input. One interacts
-with the Game of Life by creating an initial configuration and observing how it
-evolves. The game is played on a grid of cells, where each cell is either alive
-or dead. We represent a dead cell with color white and a living cell with color
-black. The state of the grid evolves through time according to a few simple
-rules.
+is determined solely by its initial state, requiring no further input from the
+player. One interacts with the Game of Life by creating an initial configuration
+and observing how it evolves. The game is played on a grid of cells, where each
+cell is either alive or dead. We represent a dead cell with color white and a
+living cell with color black. The state of the grid evolves through time
+according to a few simple rules.
 The rules are as follows:
 1. Any live cell with fewer than two live neighbours dies, as if by underpopulation.
 2. Any live cell with two or three live neighbours lives on to the next generation.
 3. Any live cell with more than three live neighbours dies, as if by overpopulation.
 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction.
 The rules of the game are simple. However, given a random initial state, the
-patterns that emerge can becomplex.
+patterns that emerge can becomplex, as is evident from the animation.
 "
 
 
@@ -48,6 +48,30 @@ begin
 	end
 
 end
+
+# ╔═╡ 6cf547f9-a955-4735-ad8e-9a732d1733fc
+md"
+# General Definiton of Cellular Automata
+The above situation is only a 2D special case of cellular automata. In general, a cellular automaton is defined with the following three components:
+1. A set of cells with a certain topology. For example, the cells can be arranged in a 2D grid, or a 1D line, or a 3D cube.
+2. A set of rules that determine the evolution of the system.
+3. Each cell is also associated with a state, which can be either alive or dead. This is called the initial state of the system.
+
+
+The topology is quite easy to understand. For example, Conway game of life is defined on a square lattice.
+The rules are a bit more complicated. They either start by the name *Rule* plus
+a number like in [here](https://mathworld.wolfram.com/images/eps-svg/ElementaryCARule030_700.svg).
+The term 'elementary cellular automaton' was coined by S. Wolfram to denote such
+1D automata. There were also 'totalistic automata' whose name starts with *Code*
+plus a number. The only difference between the two is that the elementary
+automata can only take values dead or alive while totalistic automata can take
+values from 0 to k.
+
+## Some interesting facts
+1. There is a type of initial state that can only exist as initial state. They are called [Garden of Eden](https://conwaylife.com/wiki/Garden_of_Eden).
+2. The rules are defined locally. This means that the evolution of a cell is only dependent on the state of cells that are adjacent to it. This is called the *locality* of the automaton. Can you think of a reason why this is true?
+3. There are also sub-patterns that emerge. They could be classified into either *Still life*, *Oscillators*, or *Space Ships* [Click me!](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
+"
 
 # ╔═╡ a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
 md"
@@ -99,15 +123,6 @@ begin
 	end
 
 end 
-
-# ╔═╡ 6cf547f9-a955-4735-ad8e-9a732d1733fc
-md"
-We should also note that the rules are not fixed. We can change the rules to make the game more interesting.
-This is what happens in the general case of cellular automata.
-
-Describe how to define a rule, look at https://www.cs.cmu.edu/~tcortina/15110m13/Unit09PtC.pdf
-Give an example of what a rule could present
-"
 
 # ╔═╡ 99d79079-5f23-4abd-8a07-3465d5263891
 md"
@@ -1070,9 +1085,9 @@ version = "1.4.1+0"
 # ╠═ae36ea00-8761-4066-86f9-4a1814d3a3d9
 # ╟─bed736d7-2c81-43fd-9b65-cfcf9cf4d612
 # ╠═fd075859-ca44-44b0-83de-f0d3b9dee70b
+# ╟─6cf547f9-a955-4735-ad8e-9a732d1733fc
 # ╟─a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
 # ╠═298734a8-278c-488b-a5ff-30087ae412cc
-# ╠═6cf547f9-a955-4735-ad8e-9a732d1733fc
 # ╠═99d79079-5f23-4abd-8a07-3465d5263891
 # ╠═4ac48c41-3934-41ef-af37-1b98e6175c37
 # ╠═b0c1ffe2-fd4e-4a61-b399-f9d5d919189c
