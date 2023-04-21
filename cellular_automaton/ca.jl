@@ -6,8 +6,15 @@ using InteractiveUtils
 
 # ╔═╡ ae36ea00-8761-4066-86f9-4a1814d3a3d9
 begin 
-	using CellularAutomata, Plots
+	using CellularAutomata, Plots, Revise
+	include("./helper.jl")
 end
+
+# ╔═╡ 85d665f9-fa6b-4fb4-8aa5-2566ea546990
+rle2txt(raw"30bo$31b2o$30b2o$8bobo$8b2o$9bo25bo$33b2obo$34b2o2$8bo$7b2o18b2o$2o5b
+obo16bobo$b2o4b2o19bo$o!",(14,37))
+
+
 
 # ╔═╡ bed736d7-2c81-43fd-9b65-cfcf9cf4d612
 md"
@@ -70,6 +77,7 @@ values from 0 to k.
 1. There is a type of initial state that can only exist as initial state. They are called [Garden of Eden](https://conwaylife.com/wiki/Garden_of_Eden).
 2. The rules are defined locally. This means that the evolution of a cell is only dependent on the state of cells that are adjacent to it. This is called the *locality* of the automaton. Can you think of a reason why this is true?
 3. There are also sub-patterns that emerge. They could be classified into either *Still life*, *Oscillators*, or *Space Ships* [Click me!](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
+## Some examples
 "
 
 # ╔═╡ c8469f2c-13b8-4451-9ff3-9faaf3b14d60
@@ -93,21 +101,37 @@ heatmap(ca.evolution,
     ticks=false)
 end
 
+# ╔═╡ 050cc27c-c4b4-4de7-a78c-b577a396dba5
+let
+	# create a still life object, bee hive, from gliders
+	repeater = rle2txt(raw"obo$b2o$bo10$50bo$50bobo$50b2o5$5b2o$4bo2bo$5bobo$6bob2o$7bo2bo8bobo$8b2o10b2o$20bo13$20b2o$19bobo$21bo!",(41,53))
+	space = zeros(Bool, 60, 60)
+	insert =  7
+	space[insert:insert+size(repeater, 1)-1, insert:insert+size(repeater, 2)-1] = repeater
+	gens = 1
+	repeating_pattern = CellularAutomaton(Life((3, (2,3))), space, gens)
+
+	@gif for i = 1:gens
+	    heatmap(repeating_pattern.evolution[:,:,i],
+	    yflip=true,
+	    c=cgrad([:white, :black]),
+		legend=:none,
+	    size=(1080,1080),
+	    ticks=false)
+	end
+end
+
 # ╔═╡ e7832ab7-89e4-4085-9f57-41d29df647e1
 let
+	# eagle turned into a blinker which oscillates indefinitely
 repeater = [
-[0 0 0 1 1 1 1 1 1 0 1 1   ]
-[0 0 0 1 1 1 1 1 1 0 1 1   ]
-[0 0 0 0 0 0 0 0 0 0 1 1   ]
-[0 0 0 1 1 0 0 0 0 0 1 1   ]
-[0 0 0 1 1 0 0 0 0 0 1 1   ]
-[0 0 0 1 1 0 0 0 0 0 1 1   ]
-[0 0 0 1 1 0 0 0 0 0 0 0   ]
-[0 0 0 1 1 0 1 1 1 1 1 1   ]
-[0 0 0 1 1 0 1 1 1 1 1 1   ]
+   [  0 0 1 0 0  ]
+   [  1 1 0 1 1  ]
+   [  0 1 0 1 0  ]
+   [  0 0 1 0 0  ]
 ]
-	space = zeros(Bool, 30, 30)
-	insert = 1
+	space = zeros(Bool, 20, 20)
+	insert = 5
 	space[insert:insert+size(repeater, 1)-1, insert:insert+size(repeater, 2)-1] = repeater
 	gens = 100
 	repeating_pattern = CellularAutomaton(Life((3, (2,3))), space, gens)
@@ -116,12 +140,41 @@ repeater = [
 	    heatmap(repeating_pattern.evolution[:,:,i], 
 	    yflip=true, 
 	    c=cgrad([:white, :black]),
-	    legend = :none,
+		legend=:none,
 	    size=(1080,1080),
 	    ticks=false)
 	end
-	
 end
+
+# ╔═╡ 532f56ca-ede2-4c3a-8c97-c37bb78c3ebd
+let
+	# space ship like object
+	glider = [[0, 0, 1, 0, 0] [0, 0, 0, 1, 0] [0, 1, 1, 1, 0]]
+	
+	space = zeros(Bool, 30, 30)
+	insert = 1
+	space[insert:insert+size(glider, 1)-1, insert:insert+size(glider, 2)-1] = glider
+	gens = 100
+	space_gliding = CellularAutomaton(Life((3, (2,3))), space, gens)
+	
+	@gif for i = 1:gens
+	    heatmap(space_gliding.evolution[:,:,i], 
+	    yflip=true, 
+	    c=cgrad([:white, :black]),
+		legend=:none,
+	    size=(1080,1080),
+	    ticks=false)
+	end
+end
+
+# ╔═╡ 99d79079-5f23-4abd-8a07-3465d5263891
+md"
+# Origin of Cellular Automaton
+Cellular Automata was invented in the hope to find a way to simulate the behavior of complex systems with simple and local rules.
+The idea is that if we can find a way to simulate complex systems with simple rules, we can then use these rules to predict the behavior of the complex system.
+This is a very powerful idea, and it has been used in many fields, such as biology, chemistry, physics, and economics.
+Furthermore, this is not based on nothing. As we
+"
 
 # ╔═╡ a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
 md"
@@ -174,15 +227,6 @@ begin
 
 end 
 
-# ╔═╡ 99d79079-5f23-4abd-8a07-3465d5263891
-md"
-# Origin of Cellular Automaton
-Cellular Automata was invented in the hope to find a way to simulate the behavior of complex systems with simple and local rules.
-The idea is that if we can find a way to simulate complex systems with simple rules, we can then use these rules to predict the behavior of the complex system.
-This is a very powerful idea, and it has been used in many fields, such as biology, chemistry, physics, and economics.
-Furthermore, this is not based on nothing. As we
-"
-
 # ╔═╡ 4ac48c41-3934-41ef-af37-1b98e6175c37
 
 
@@ -194,10 +238,12 @@ PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CellularAutomata = "878138dc-5b27-11ea-1a71-cb95d38d6b29"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 
 [compat]
 CellularAutomata = "~0.0.2"
 Plots = "~1.38.9"
+Revise = "~3.5.2"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -206,7 +252,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "7eff8ba5636a9c8f5efed54deda3c27f1b77d3e9"
+project_hash = "32fe6280ca74a2ffb5d26d6c3c1563ebbca4c672"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -251,6 +297,12 @@ deps = ["ChainRulesCore", "LinearAlgebra", "Test"]
 git-tree-sha1 = "485193efd2176b88e6622a39a246f8c5b600e74e"
 uuid = "9e997f8a-9a97-42d5-a9f1-ce6bfc15e2c0"
 version = "0.1.6"
+
+[[deps.CodeTracking]]
+deps = ["InteractiveUtils", "UUIDs"]
+git-tree-sha1 = "d730914ef30a06732bdd9f763f6cc32e92ffbff1"
+uuid = "da1fd8a2-8d9e-5ec2-8556-3022fb5608a2"
+version = "1.3.1"
 
 [[deps.CodecZlib]]
 deps = ["TranscodingStreams", "Zlib_jll"]
@@ -316,6 +368,10 @@ uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 [[deps.DelimitedFiles]]
 deps = ["Mmap"]
 uuid = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+
+[[deps.Distributed]]
+deps = ["Random", "Serialization", "Sockets"]
+uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[deps.DocStringExtensions]]
 deps = ["LibGit2"]
@@ -476,6 +532,12 @@ git-tree-sha1 = "6f2675ef130a300a112286de91973805fcc5ffbc"
 uuid = "aacddb02-875f-59d6-b918-886e6ef4fbf8"
 version = "2.1.91+0"
 
+[[deps.JuliaInterpreter]]
+deps = ["CodeTracking", "InteractiveUtils", "Random", "UUIDs"]
+git-tree-sha1 = "6a125e6a4cb391e0b9adbd1afa9e771c2179f8ef"
+uuid = "aa1ae85d-cabe-5617-a682-6adf51b2e16a"
+version = "0.9.23"
+
 [[deps.LAME_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "f6250b16881adf048549549fba48b1161acdac8c"
@@ -593,6 +655,12 @@ deps = ["Dates", "Logging"]
 git-tree-sha1 = "cedb76b37bc5a6c702ade66be44f831fa23c681e"
 uuid = "e6f89c97-d47a-5376-807f-9c37f3926c36"
 version = "1.0.0"
+
+[[deps.LoweredCodeUtils]]
+deps = ["JuliaInterpreter"]
+git-tree-sha1 = "60168780555f3e663c536500aa790b6368adc02a"
+uuid = "6f1432cf-f94c-5a45-995e-cdbf5db27b0b"
+version = "2.3.0"
 
 [[deps.MacroTools]]
 deps = ["Markdown", "Random"]
@@ -785,6 +853,12 @@ deps = ["UUIDs"]
 git-tree-sha1 = "838a3a4188e2ded87a4f9f184b4b0d78a1e91cb7"
 uuid = "ae029012-a4dd-5104-9daa-d747884805df"
 version = "1.3.0"
+
+[[deps.Revise]]
+deps = ["CodeTracking", "Distributed", "FileWatching", "JuliaInterpreter", "LibGit2", "LoweredCodeUtils", "OrderedCollections", "Pkg", "REPL", "Requires", "UUIDs", "Unicode"]
+git-tree-sha1 = "feafdc70b2e6684314e188d95fe66d116de834a7"
+uuid = "295af30f-e4ad-537b-8983-00126c2a3abe"
+version = "3.5.2"
 
 [[deps.SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
@@ -1133,14 +1207,17 @@ version = "1.4.1+0"
 
 # ╔═╡ Cell order:
 # ╠═ae36ea00-8761-4066-86f9-4a1814d3a3d9
+# ╠═85d665f9-fa6b-4fb4-8aa5-2566ea546990
 # ╟─bed736d7-2c81-43fd-9b65-cfcf9cf4d612
 # ╠═fd075859-ca44-44b0-83de-f0d3b9dee70b
 # ╟─6cf547f9-a955-4735-ad8e-9a732d1733fc
 # ╠═c8469f2c-13b8-4451-9ff3-9faaf3b14d60
+# ╠═050cc27c-c4b4-4de7-a78c-b577a396dba5
 # ╠═e7832ab7-89e4-4085-9f57-41d29df647e1
+# ╠═532f56ca-ede2-4c3a-8c97-c37bb78c3ebd
+# ╟─99d79079-5f23-4abd-8a07-3465d5263891
 # ╟─a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
 # ╠═298734a8-278c-488b-a5ff-30087ae412cc
-# ╠═99d79079-5f23-4abd-8a07-3465d5263891
 # ╠═4ac48c41-3934-41ef-af37-1b98e6175c37
 # ╠═b0c1ffe2-fd4e-4a61-b399-f9d5d919189c
 # ╟─00000000-0000-0000-0000-000000000001
