@@ -6,14 +6,41 @@ using InteractiveUtils
 
 # ╔═╡ ae36ea00-8761-4066-86f9-4a1814d3a3d9
 begin 
-	using CellularAutomata, Plots, Revise
-	include("./helper.jl")
+	using CellularAutomata, Plots
 end
 
-# ╔═╡ 85d665f9-fa6b-4fb4-8aa5-2566ea546990
-rle2txt(raw"30bo$31b2o$30b2o$8bobo$8b2o$9bo25bo$33b2obo$34b2o2$8bo$7b2o18b2o$2o5b
-obo16bobo$b2o4b2o19bo$o!",(14,37))
+# ╔═╡ f85a085f-e82b-4b0f-b54f-25e91935f9f6
+function rle2txt(rle::String,cell_size::Tuple{T,T}) where T <: Int
+    # convert run length encoding of Conway Game of Life to a matrix of 0s and 1s
+    # use '0' for 'o' and '1' for 'b'
+    # remove all newline in the string
+    rle = replace(rle, r"\n" => "")
+    plain = zeros(Int,cell_size)
+    rol = 1
+    col = 1
+    cur_num = 0
+    for i in 1:length(rle)-1
+        if rle[i] in ['0','1','2','3','4','5','6','7','8','9']
+            cur_num = cur_num*10 + parse(Int,rle[i])
+        else
+            cur_num = cur_num == 0 ? 1 : cur_num
+            if rle[i] == 'o'
+                plain[rol,col:col+cur_num-1] = ones(Int,1,cur_num)
+                col += cur_num
+                cur_num = 0
+            elseif rle[i] == 'b'
+                col += cur_num
+                cur_num = 0
+            elseif rle[i] == '$'
+                rol += cur_num
+                col = 1
+                cur_num = 0
+            end
+        end
 
+    end
+    return plain
+end
 
 
 # ╔═╡ bed736d7-2c81-43fd-9b65-cfcf9cf4d612
@@ -104,11 +131,13 @@ end
 # ╔═╡ 050cc27c-c4b4-4de7-a78c-b577a396dba5
 let
 	# create a still life object, bee hive, from gliders
-	repeater = rle2txt(raw"obo$b2o$bo10$50bo$50bobo$50b2o5$5b2o$4bo2bo$5bobo$6bob2o$7bo2bo8bobo$8b2o10b2o$20bo13$20b2o$19bobo$21bo!",(41,53))
-	space = zeros(Bool, 60, 60)
+    #
+	repeater = rle2txt(raw"32bo$30bobo$14bo16b2o$13bo$13b3o$39bobo$32bo6b2o$33b2o5bo$32b2o2$12bo
+$12bobo$12b2o2$28bo$b2o8bo16b2o$obo7b2o15bobo$2bo7bobo!",(18,42))
+	space = zeros(Bool, 50, 50)
 	insert =  7
 	space[insert:insert+size(repeater, 1)-1, insert:insert+size(repeater, 2)-1] = repeater
-	gens = 1
+	gens = 100
 	repeating_pattern = CellularAutomaton(Life((3, (2,3))), space, gens)
 
 	@gif for i = 1:gens
@@ -228,22 +257,25 @@ begin
 end 
 
 # ╔═╡ 4ac48c41-3934-41ef-af37-1b98e6175c37
-
+md"[Universality of NAND Gate](https://en.wikipedia.org/wiki/NAND_logic#Making_other_gates_by_using_NAND_gates)
+"
 
 # ╔═╡ b0c1ffe2-fd4e-4a61-b399-f9d5d919189c
-
+# Construct NAND Gate with Glider Gun explicitly.
+# If too hard, just show the animation.
+# https://nicholas.carlini.com/writing/2020/digital-logic-game-of-life.html
+# https://www.cs.york.ac.uk/nature/ecal2015/late-breaking/153.pdf
+#
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 CellularAutomata = "878138dc-5b27-11ea-1a71-cb95d38d6b29"
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
-Revise = "295af30f-e4ad-537b-8983-00126c2a3abe"
 
 [compat]
 CellularAutomata = "~0.0.2"
 Plots = "~1.38.9"
-Revise = "~3.5.2"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -252,7 +284,7 @@ PLUTO_MANIFEST_TOML_CONTENTS = """
 
 julia_version = "1.8.5"
 manifest_format = "2.0"
-project_hash = "32fe6280ca74a2ffb5d26d6c3c1563ebbca4c672"
+project_hash = "7eff8ba5636a9c8f5efed54deda3c27f1b77d3e9"
 
 [[deps.ArgTools]]
 uuid = "0dad84c5-d112-42e6-8d28-ef12dabb789f"
@@ -297,12 +329,6 @@ deps = ["ChainRulesCore", "LinearAlgebra", "Test"]
 git-tree-sha1 = "485193efd2176b88e6622a39a246f8c5b600e74e"
 uuid = "9e997f8a-9a97-42d5-a9f1-ce6bfc15e2c0"
 version = "0.1.6"
-
-[[deps.CodeTracking]]
-deps = ["InteractiveUtils", "UUIDs"]
-git-tree-sha1 = "d730914ef30a06732bdd9f763f6cc32e92ffbff1"
-uuid = "da1fd8a2-8d9e-5ec2-8556-3022fb5608a2"
-version = "1.3.1"
 
 [[deps.CodecZlib]]
 deps = ["TranscodingStreams", "Zlib_jll"]
@@ -368,10 +394,6 @@ uuid = "ade2ca70-3891-5945-98fb-dc099432e06a"
 [[deps.DelimitedFiles]]
 deps = ["Mmap"]
 uuid = "8bb1440f-4735-579b-a4ab-409b98df4dab"
-
-[[deps.Distributed]]
-deps = ["Random", "Serialization", "Sockets"]
-uuid = "8ba89e20-285c-5b6f-9357-94700520ee1b"
 
 [[deps.DocStringExtensions]]
 deps = ["LibGit2"]
@@ -532,12 +554,6 @@ git-tree-sha1 = "6f2675ef130a300a112286de91973805fcc5ffbc"
 uuid = "aacddb02-875f-59d6-b918-886e6ef4fbf8"
 version = "2.1.91+0"
 
-[[deps.JuliaInterpreter]]
-deps = ["CodeTracking", "InteractiveUtils", "Random", "UUIDs"]
-git-tree-sha1 = "6a125e6a4cb391e0b9adbd1afa9e771c2179f8ef"
-uuid = "aa1ae85d-cabe-5617-a682-6adf51b2e16a"
-version = "0.9.23"
-
 [[deps.LAME_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "f6250b16881adf048549549fba48b1161acdac8c"
@@ -655,12 +671,6 @@ deps = ["Dates", "Logging"]
 git-tree-sha1 = "cedb76b37bc5a6c702ade66be44f831fa23c681e"
 uuid = "e6f89c97-d47a-5376-807f-9c37f3926c36"
 version = "1.0.0"
-
-[[deps.LoweredCodeUtils]]
-deps = ["JuliaInterpreter"]
-git-tree-sha1 = "60168780555f3e663c536500aa790b6368adc02a"
-uuid = "6f1432cf-f94c-5a45-995e-cdbf5db27b0b"
-version = "2.3.0"
 
 [[deps.MacroTools]]
 deps = ["Markdown", "Random"]
@@ -853,12 +863,6 @@ deps = ["UUIDs"]
 git-tree-sha1 = "838a3a4188e2ded87a4f9f184b4b0d78a1e91cb7"
 uuid = "ae029012-a4dd-5104-9daa-d747884805df"
 version = "1.3.0"
-
-[[deps.Revise]]
-deps = ["CodeTracking", "Distributed", "FileWatching", "JuliaInterpreter", "LibGit2", "LoweredCodeUtils", "OrderedCollections", "Pkg", "REPL", "Requires", "UUIDs", "Unicode"]
-git-tree-sha1 = "feafdc70b2e6684314e188d95fe66d116de834a7"
-uuid = "295af30f-e4ad-537b-8983-00126c2a3abe"
-version = "3.5.2"
 
 [[deps.SHA]]
 uuid = "ea8e919c-243c-51af-8825-aaa63cd721ce"
@@ -1207,7 +1211,7 @@ version = "1.4.1+0"
 
 # ╔═╡ Cell order:
 # ╠═ae36ea00-8761-4066-86f9-4a1814d3a3d9
-# ╠═85d665f9-fa6b-4fb4-8aa5-2566ea546990
+# ╠═f85a085f-e82b-4b0f-b54f-25e91935f9f6
 # ╟─bed736d7-2c81-43fd-9b65-cfcf9cf4d612
 # ╠═fd075859-ca44-44b0-83de-f0d3b9dee70b
 # ╟─6cf547f9-a955-4735-ad8e-9a732d1733fc
