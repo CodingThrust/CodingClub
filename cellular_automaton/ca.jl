@@ -51,12 +51,11 @@ end
 
 # ╔═╡ 6cf547f9-a955-4735-ad8e-9a732d1733fc
 md"
-# General Definiton of Cellular Automata
+# General Cellular Automata
 The above situation is only a 2D special case of cellular automata. In general, a cellular automaton is defined with the following three components:
 1. A set of cells with a certain topology. For example, the cells can be arranged in a 2D grid, or a 1D line, or a 3D cube.
 2. A set of rules that determine the evolution of the system.
 3. Each cell is also associated with a state, which can be either alive or dead. This is called the initial state of the system.
-
 
 The topology is quite easy to understand. For example, Conway game of life is defined on a square lattice.
 The rules are a bit more complicated. They either start by the name *Rule* plus
@@ -72,6 +71,57 @@ values from 0 to k.
 2. The rules are defined locally. This means that the evolution of a cell is only dependent on the state of cells that are adjacent to it. This is called the *locality* of the automaton. Can you think of a reason why this is true?
 3. There are also sub-patterns that emerge. They could be classified into either *Still life*, *Oscillators*, or *Space Ships* [Click me!](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
 "
+
+# ╔═╡ c8469f2c-13b8-4451-9ff3-9faaf3b14d60
+let
+states = 2
+radius = 1
+generations = 50
+ncells = 111
+starting_val = zeros(Bool, ncells)
+starting_val[Int(floor(ncells/2)+1)] = 1
+
+rule = 18
+
+ca = CellularAutomaton(DCA(rule), starting_val, generations)
+
+heatmap(ca.evolution, 
+    yflip=true, 
+    c=cgrad([:white, :black]),
+    legend = :none,
+    axis=false,
+    ticks=false)
+end
+
+# ╔═╡ e7832ab7-89e4-4085-9f57-41d29df647e1
+let
+repeater = [
+[0 0 0 1 1 1 1 1 1 0 1 1   ]
+[0 0 0 1 1 1 1 1 1 0 1 1   ]
+[0 0 0 0 0 0 0 0 0 0 1 1   ]
+[0 0 0 1 1 0 0 0 0 0 1 1   ]
+[0 0 0 1 1 0 0 0 0 0 1 1   ]
+[0 0 0 1 1 0 0 0 0 0 1 1   ]
+[0 0 0 1 1 0 0 0 0 0 0 0   ]
+[0 0 0 1 1 0 1 1 1 1 1 1   ]
+[0 0 0 1 1 0 1 1 1 1 1 1   ]
+]
+	space = zeros(Bool, 30, 30)
+	insert = 1
+	space[insert:insert+size(repeater, 1)-1, insert:insert+size(repeater, 2)-1] = repeater
+	gens = 100
+	repeating_pattern = CellularAutomaton(Life((3, (2,3))), space, gens)
+
+	@gif for i = 1:gens
+	    heatmap(repeating_pattern.evolution[:,:,i], 
+	    yflip=true, 
+	    c=cgrad([:white, :black]),
+	    legend = :none,
+	    size=(1080,1080),
+	    ticks=false)
+	end
+	
+end
 
 # ╔═╡ a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
 md"
@@ -1086,6 +1136,8 @@ version = "1.4.1+0"
 # ╟─bed736d7-2c81-43fd-9b65-cfcf9cf4d612
 # ╠═fd075859-ca44-44b0-83de-f0d3b9dee70b
 # ╟─6cf547f9-a955-4735-ad8e-9a732d1733fc
+# ╠═c8469f2c-13b8-4451-9ff3-9faaf3b14d60
+# ╠═e7832ab7-89e4-4085-9f57-41d29df647e1
 # ╟─a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
 # ╠═298734a8-278c-488b-a5ff-30087ae412cc
 # ╠═99d79079-5f23-4abd-8a07-3465d5263891
