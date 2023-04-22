@@ -91,19 +91,50 @@ The above situation is only a 2D special case of cellular automata. In general, 
 2. A set of rules that determine the evolution of the system.
 3. Each cell is also associated with a state, which can be either alive or dead. This is called the initial state of the system.
 
-The topology is quite easy to understand. For example, Conway game of life is defined on a square lattice.
+The topology is quite easy to understand. For example, Conway game of life is
+defined on a square lattice. Ofcourse, there are other topologies. For example,
+the cells could form a honeycomb lattice, or a triangular lattice, or a
+hexagonal lattice.
+
 The rules are a bit more complicated. They either start by the name *Rule* plus
-a number like in [here](https://mathworld.wolfram.com/images/eps-svg/ElementaryCARule030_700.svg).
+a number like in
+[here](https://mathworld.wolfram.com/images/eps-svg/ElementaryCARule030_700.svg).
 The term 'elementary cellular automaton' was coined by S. Wolfram to denote such
 1D automata. There were also 'totalistic automata' whose name starts with *Code*
 plus a number. The only difference between the two is that the elementary
 automata can only take values dead or alive while totalistic automata can take
 values from 0 to k.
 
+"
+
+# ╔═╡ 60547058-e259-4db1-8b92-e349a1ef589e
+let
+    garden_of_eden = rle2txt(raw"33o$2obob3ob3ob2obobobobobobobobobo$obob3ob3ob4ob3obobobobobobob$5ob3o
+b3ob4ob14o$obob2ob3ob3obob3obobobobobobob$4ob3ob3ob5ob2obobobobobobo$b
+2ob3ob3ob3obobob13o$2ob2ob3ob3ob2ob4obobobobobobo$18ob14o!",(9,33))
+
+	space = zeros(Bool, 20, 40)
+	insert =  5
+	space[insert:insert+size(garden_of_eden, 1)-1, insert:insert+size(garden_of_eden, 2)-1] = garden_of_eden
+	gens = 1
+	garden_pattern = CellularAutomaton(Life((3, (2,3))), space, gens)
+
+	@gif for i = 1:gens
+	    heatmap(garden_pattern.evolution[:,:,i],
+	    yflip=true,
+	    c=cgrad([:white, :black]),
+		legend=:none,
+	    size=(1080,1080),
+	    ticks=false)
+	end
+end
+
+# ╔═╡ 454492d4-1a4b-4c2d-85ea-807413940dc7
+md"
 ## Some interesting facts
-1. There is a type of initial state that can only exist as initial state. They are called [Garden of Eden](https://conwaylife.com/wiki/Garden_of_Eden).
-2. The rules are defined locally. This means that the evolution of a cell is only dependent on the state of cells that are adjacent to it. This is called the *locality* of the automaton. Can you think of a reason why this is true?
-3. There are also sub-patterns that emerge. They could be classified into either *Still life*, *Oscillators*, or *Space Ships* [Click me!](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
+1. There is a type of initial state that can only exist as initial state. They are called [Garden of Eden](https://conwaylife.com/wiki/Garden_of_Eden). Can you think of an implication of this?
+2. The rules are defined locally. This means that the evolution of a cell is only dependent on the state of cells that are adjacent to it. This is called the *locality* of the automaton. This is actually one of the key motivation for devising cellular automata.
+3. People observe some patterns emerge repeatedly out of different games. They could be classified into either *Still life*, *Oscillators*, or *Space Ships* [Click me!](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Examples_of_patterns)
 ## Some examples
 "
 
@@ -159,10 +190,10 @@ repeater = [
    [  0 1 0 1 0  ]
    [  0 0 1 0 0  ]
 ]
-	space = zeros(Bool, 20, 20)
+	space = zeros(Bool, 10, 10)
 	insert = 5
 	space[insert:insert+size(repeater, 1)-1, insert:insert+size(repeater, 2)-1] = repeater
-	gens = 100
+	gens = 10
 	repeating_pattern = CellularAutomaton(Life((3, (2,3))), space, gens)
 
 	@gif for i = 1:gens
@@ -198,32 +229,53 @@ end
 
 # ╔═╡ 99d79079-5f23-4abd-8a07-3465d5263891
 md"
-# Origin of Cellular Automaton
-Cellular Automata was invented in the hope to find a way to simulate the behavior of complex systems with simple and local rules.
-The idea is that if we can find a way to simulate complex systems with simple rules, we can then use these rules to predict the behavior of the complex system.
-This is a very powerful idea, and it has been used in many fields, such as biology, chemistry, physics, and economics.
-Furthermore, this is not based on nothing. As we
-"
+# Origin of Cellular Automaton With those said, we have seen many interesting
+features in Cellular Automata. But how did it all start?
 
-# ╔═╡ a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
-md"
+Originally, von Neumann wanted to create a self-replicating robot. Defeated by
+the difficulty to provide infinite amount of parts to the robot for
+self-replication, he turned to Ulam's suggestion and created a reductionist
+model of self-replication in a discretized world. This model is now known as the
+von Neumann Universal Constructor.
+
+However, what we have been focusing on today is the idea of using cellular
+automata (CA) to simulate physical systems which emerged in the 1980s. At that
+time, researchers began to explore the potential of CA as a tool for modeling
+and simulating complex phenomena.
+
+One of the key insights that led to the use of CA for simulating physical
+systems was the realization that many physical systems can be described by
+simple rules governing the behavior of individual particles or entities, which
+interact with their neighbors in a *local* and *deterministic* way. This is also
+the basic premise of CA, which are defined as discrete models of dynamic systems
+in which the state of each cell (or particle) is updated based on the states of
+its neighbors according to a set of simple rules.
+
+The validity of this insight was based on the fact that CA is equivalent to a
+Turing machine. Due to their universality, CA can simulate any algorithm. This
+means that CA can simulate any algorithm which in turn simulates a physical
+system.
+
 # Universality of cellular automaton
-A cellular automata is a universal Turing machine. This means that any
-computation that can be performed by a Turing machine can be performed by a
-cellular automata. For the purpose of illustration, we will use the Game of Life
-as an example. The following animation shows the evolution of what's known as a
-Gosper glider gun. This initial state is designed in response to Conway's
-challenge. Using a finite amount of living cells in the initial state, evolution
-of the game will produce an infinite amount of living cells. It is quite
-intuitive to observe that the initial state will produce a glider every 30
-steps. The glider will fly into infinity and beyond, thus never interact with
-the gun or any glider that is created. Hence, we have an infinite amount of
-cells created at the end.
+We will not be going over the proof for universality of Turing Machine or CA
+directly. What we will do is to show you how you could implement logic gates
+with cellular automata. In a very hand-waving way, if you can implement all the
+logic gates, you could implement any algorithm. (Yes, I should have shown you
+how to construct a NAND gate using CA, but I ran out of time and there's a handy
+video that shows you the construction of other gates. So, that's that)
 
-However, what is more interesting for this initial state is that the glider that
-is produced by it could be used to construct arbitrary logical circuit.
+For the purpose of illustration, we will use the Game of Life as an example. The
+following animation shows the evolution of what's known as a Gosper glider gun.
+This initial state is designed in response to Conway's challenge. Using a finite
+amount of living cells in the initial state, evolution of the game will produce
+an infinite amount of living cells. It is quite intuitive to observe that the
+initial state will produce a glider every 30 steps. The glider will fly into
+infinity and beyond, thus never interact with the gun or any glider that is
+created. Hence, we have an infinite amount of cells created at the end.
 
-...
+Now that we have seen how a pattern could produce a glider indefinitely (like a
+signal), let's see how we could use this to implement logic gates.
+[Video](https://www.youtube.com/watch?v=vGWGeund3eA)
 "
 
 # ╔═╡ 298734a8-278c-488b-a5ff-30087ae412cc
@@ -257,15 +309,12 @@ begin
 end 
 
 # ╔═╡ 4ac48c41-3934-41ef-af37-1b98e6175c37
-md"[Universality of NAND Gate](https://en.wikipedia.org/wiki/NAND_logic#Making_other_gates_by_using_NAND_gates)
+md"
+# Further readings
+1. [Universality of NAND Gate](https://en.wikipedia.org/wiki/NAND_logic#Making_other_gates_by_using_NAND_gates)
+2. [Creating CPU out of Conway Game of Life](https://nicholas.carlini.com/writing/2021/unlimited-register-machine-game-of-life.html)
+3. [NAND Gate from Conway Game of Life](https://www.cs.york.ac.uk/nature/ecal2015/late-breaking/153.pdf)
 "
-
-# ╔═╡ b0c1ffe2-fd4e-4a61-b399-f9d5d919189c
-# Construct NAND Gate with Glider Gun explicitly.
-# If too hard, just show the animation.
-# https://nicholas.carlini.com/writing/2020/digital-logic-game-of-life.html
-# https://www.cs.york.ac.uk/nature/ecal2015/late-breaking/153.pdf
-#
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1211,18 +1260,18 @@ version = "1.4.1+0"
 
 # ╔═╡ Cell order:
 # ╠═ae36ea00-8761-4066-86f9-4a1814d3a3d9
-# ╠═f85a085f-e82b-4b0f-b54f-25e91935f9f6
+# ╟─f85a085f-e82b-4b0f-b54f-25e91935f9f6
 # ╟─bed736d7-2c81-43fd-9b65-cfcf9cf4d612
 # ╠═fd075859-ca44-44b0-83de-f0d3b9dee70b
 # ╟─6cf547f9-a955-4735-ad8e-9a732d1733fc
+# ╟─60547058-e259-4db1-8b92-e349a1ef589e
+# ╟─454492d4-1a4b-4c2d-85ea-807413940dc7
 # ╠═c8469f2c-13b8-4451-9ff3-9faaf3b14d60
-# ╠═050cc27c-c4b4-4de7-a78c-b577a396dba5
-# ╠═e7832ab7-89e4-4085-9f57-41d29df647e1
-# ╠═532f56ca-ede2-4c3a-8c97-c37bb78c3ebd
+# ╟─050cc27c-c4b4-4de7-a78c-b577a396dba5
+# ╟─e7832ab7-89e4-4085-9f57-41d29df647e1
+# ╟─532f56ca-ede2-4c3a-8c97-c37bb78c3ebd
 # ╟─99d79079-5f23-4abd-8a07-3465d5263891
-# ╟─a2d5fd62-0d55-4125-8c09-fd5ae9f43f2f
-# ╠═298734a8-278c-488b-a5ff-30087ae412cc
-# ╠═4ac48c41-3934-41ef-af37-1b98e6175c37
-# ╠═b0c1ffe2-fd4e-4a61-b399-f9d5d919189c
+# ╟─298734a8-278c-488b-a5ff-30087ae412cc
+# ╟─4ac48c41-3934-41ef-af37-1b98e6175c37
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
