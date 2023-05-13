@@ -9,10 +9,10 @@
 
 ############## MODULE LOADING ###############
 # Clear the environment from any previously loaded modules
-module purge > /dev/null 2>&1
+# module purge > /dev/null 2>&1
 # Show available modules with module avail
 module load openmpi
 
 ############## RUN ######################
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-srun --project=$PWD julia script.jl
+srun $HOME/.local/bin/julia --project=$PWD mpi.jl

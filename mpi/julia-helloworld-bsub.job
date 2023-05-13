@@ -1,0 +1,17 @@
+#!/bin/bash
+
+############## SLURM SETUP ###############
+#BSUB -W 10:00
+#BSUB -n 4
+#BSUB -R "span[ptile=2]"
+#BSUB -e $PWD/%J.err
+#BSUB -o $PWD/%J.out
+
+############## MODULE LOADING ###############
+# Clear the environment from any previously loaded modules
+# module purge > /dev/null 2>&1
+# Show available modules with module avail
+module load openmpi
+
+############## RUN ######################
+/usr/mpi/gcc/openmpi-4.1.2a1/bin/mpirun $HOME/.local/bin/julia --project=$PWD mpi.jl
