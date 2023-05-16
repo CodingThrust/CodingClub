@@ -11,7 +11,7 @@ The coding club material is usually in the form of `.pdf`, `.md` or notebooks.
 7. [20230325-Essential Julia packages - Jinguo Liu](julia-packages)
 8. [20230401-Help Desk: Linux and Git - Yusheng Zhao](helpdesk)
 9. [20230408-Simulated annealing for solving the spin-glass problem - Jinguo Liu](simulated-annealing)
-11. [20230408-Message Passing Interfaces (MPI) - Jinguo Liu](simulated-annealing)
+11. [20230408-Message Passing Interfaces (MPI) - Jinguo Liu](mpi)
 
 
 ## To join our coding club
