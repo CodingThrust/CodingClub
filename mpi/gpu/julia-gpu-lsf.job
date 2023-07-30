@@ -1,0 +1,20 @@
+#!/bin/bash
+
+############## SLURM SETUP ###############
+#BSUB -W 10:00
+#BSUB -n 4
+# To run on any of the available GPUs, the mps setting must be set to no, and the gpu queue must also be specified.
+#BSUB -q "gpu"
+#BSUB -gpgpu "1"
+#BSUB -R "span[hosts=1]"
+#BSUB -e $PWD/%J.err
+#BSUB -o $PWD/%J.out
+
+############## MODULE LOADING ###############
+# Clear the environment from any previously loaded modules
+# module purge > /dev/null 2>&1
+# Show available modules with module avail
+module load cuda-11.4
+
+############## RUN ######################
+$HOME/.juliaup/bin/julia --project=$PWD cuda.jl

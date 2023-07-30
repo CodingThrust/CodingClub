@@ -39,7 +39,7 @@ mpiexec -n 3 julia --project mpi.jl
 ## Another example
 Go through this example: https://juliaparallel.org/MPI.jl/dev/examples/06-scatterv/
 
-## Using school cluster.
+## Using HKUST-GZ cluster.
 1. Please check the tested [LSF script](julia-helloworld-lsf.job). This script can be executed on a cluster with
 ```bash
 bsub < julia-helloworld-lsf.job
