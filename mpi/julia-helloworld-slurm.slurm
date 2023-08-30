@@ -11,8 +11,8 @@
 # Clear the environment from any previously loaded modules
 # module purge > /dev/null 2>&1
 # Show available modules with module avail
-module load openmpi
+module load mpi/openmpi-4.1.5
 
 ############## RUN ######################
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-srun $HOME/.local/bin/julia --project=$PWD mpi.jl
+mpirun $HOME/.juliaup/bin/julia --project=$PWD mpi.jl
